@@ -14,7 +14,7 @@
 #    dnsmasq
 #    iptables
 
-VERSION=0.4.6
+VERSION=0.4.6-ulno
 PROGNAME="$(basename $0)"
 
 # make sure that all command outputs are in english
@@ -1337,15 +1337,27 @@ if [[ ! -x "$HOSTAPD" ]]; then
     exit 1
 fi
 
-if [[ $(get_adapter_kernel_module ${WIFI_IFACE}) =~ ^(8192[cd][ue]|8723a[sue])$ ]]; then
-    if ! strings "$HOSTAPD" | grep -m1 rtl871xdrv > /dev/null 2>&1; then
-        echo "ERROR: You need to patch your hostapd with rtl871xdrv patches." >&2
-        exit 1
-    fi
+# on old kernels some realtek drivers needed special treatments
+# as described here (https://github.com/oblique/create_ap/issues/249)
+# this is now not necessary anymore
+# kernelversion from http://www.unix.com/shell-programming-and-scripting/249144-linux-kernel-version-comparision-method.html
+declare -a TEMP2
+TEMP1=$(uname --kernel-release)
+TEMP2=(${TEMP1//[.-]/ })
+KVERSION=$(((${TEMP2[0]} * 10000)\
+    + (${TEMP2[1]} * 100)\
+    + ${TEMP2[2]}))
+if [[ "$KVERSION" < 40413 ]]
+    if [[ $(get_adapter_kernel_module ${WIFI_IFACE}) =~ ^(8192[cd][ue]|8723a[sue])$ ]]; then
+        if ! strings "$HOSTAPD" | grep -m1 rtl871xdrv > /dev/null 2>&1; then
+            echo "ERROR: You need to patch your hostapd with rtl871xdrv patches." >&2
+            exit 1
+        fi
 
-    if [[ $DRIVER != "rtl871xdrv" ]]; then
-        echo "WARN: Your adapter needs rtl871xdrv, enabling --driver=rtl871xdrv" >&2
-        DRIVER=rtl871xdrv
+        if [[ $DRIVER != "rtl871xdrv" ]]; then
+            echo "WARN: Your adapter needs rtl871xdrv, enabling --driver=rtl871xdrv" >&2
+            DRIVER=rtl871xdrv
+        fi
     fi
 fi
 
