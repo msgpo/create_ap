@@ -1347,7 +1347,7 @@ TEMP2=(${TEMP1//[.-]/ })
 KVERSION=$(((${TEMP2[0]} * 10000)\
     + (${TEMP2[1]} * 100)\
     + ${TEMP2[2]}))
-if [[ "$KVERSION" < 40413 ]]
+if [[ "$KVERSION" < 40413 ]]; then
     if [[ $(get_adapter_kernel_module ${WIFI_IFACE}) =~ ^(8192[cd][ue]|8723a[sue])$ ]]; then
         if ! strings "$HOSTAPD" | grep -m1 rtl871xdrv > /dev/null 2>&1; then
             echo "ERROR: You need to patch your hostapd with rtl871xdrv patches." >&2
