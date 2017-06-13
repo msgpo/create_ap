@@ -1342,7 +1342,7 @@ fi
 # this is now not necessary anymore
 # kernelversion from http://www.unix.com/shell-programming-and-scripting/249144-linux-kernel-version-comparision-method.html
 declare -a TEMP2
-TEMP1=$(uname --kernel-release)
+TEMP1=$(uname --kernel-release|cut -d+ -f1)
 TEMP2=(${TEMP1//[.-]/ })
 KVERSION=$(((${TEMP2[0]} * 10000)\
     + (${TEMP2[1]} * 100)\
