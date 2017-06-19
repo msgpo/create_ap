@@ -631,6 +631,7 @@ NO_HAVEGED=0
 USE_PSK=0
 
 HOSTAPD_DEBUG_ARGS=
+HOSTAPD_EXTRA=
 REDIRECT_TO_LOCALHOST=0
 
 CONFIG_OPTS=(CHANNEL GATEWAY WPA_VERSION ETC_HOSTS DHCP_DNS NO_DNS NO_DNSMASQ HIDDEN MAC_FILTER MAC_FILTER_ACCEPT ISOLATE_CLIENTS
@@ -1198,6 +1199,11 @@ while :; do
             fi
             shift
             ;;
+        --hostapd-extra)
+            shift
+            HOSTAPD_EXTRA="$1"
+            shift
+            ;;
         --mkconfig)
             shift
             STORE_CONFIG="$1"
@@ -1670,6 +1676,7 @@ wpa_${WPA_KEY_TYPE}=${PASSPHRASE}
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP CCMP
 rsn_pairwise=CCMP
+${HOSTAPD_EXTRA}
 EOF
 fi
 
