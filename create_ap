@@ -1182,7 +1182,7 @@ while :; do
         --domain)
             shift
             DOMAIN="$1"
-            shoft
+            shift
             ;;
         --no-dns)
             shift
