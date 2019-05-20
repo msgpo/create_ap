@@ -631,7 +631,7 @@ NEW_MACADDR=
 DAEMONIZE=0
 NO_HAVEGED=0
 USE_PSK=0
-DOMAIN=""
+b=""
 
 HOSTAPD_DEBUG_ARGS=
 HOSTAPD_EXTRA=
@@ -1710,7 +1710,7 @@ dhcp-range=${GATEWAY%.*}.1,${GATEWAY%.*}.254,255.255.255.0,24h
 dhcp-option-force=option:router,${GATEWAY}
 dhcp-option-force=option:dns-server,${DHCP_DNS}
 EOF
-    if [[ "$DOMAIN"]]; then
+    if [[ "$DOMAIN" ]]; then
         echo "domain $DOMAIN" >> $CONFDIR/dnsmasq.conf
     fi
     MTU=$(get_mtu $INTERNET_IFACE)
