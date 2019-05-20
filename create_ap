@@ -1705,6 +1705,7 @@ elif [[ $NO_DNSMASQ -eq 0 ]]; then
     fi
     if [[ "$DOMAIN" ]]; then
         echo "domain=$DOMAIN" > $CONFDIR/dnsmasq.conf
+        echo "localise-queries" >> $CONFDIR/dnsmasq.conf
     else
         echo "" > $CONFDIR/dnsmasq.conf
     fi
